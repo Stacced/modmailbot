@@ -1,5 +1,6 @@
 const Eris = require('eris');
 const path = require('path');
+const diff = require('diff');
 
 const config = require('./config');
 const bot = require('./bot');
@@ -155,12 +156,31 @@ function initBaseMessageHandlers() {
     // Ignore edit events with changes only in embeds etc.
     if (newContent.trim() === oldContent.trim()) return;
 
+    // TODO: Update original message with deletions and additions (underlined / strikethrough)
+    // Send thread message with new content only to keep it clean
+
+    // Compute diffs between old and new content
+    const contentDiff = diff.diffWords(oldContent, newContent, { ignoreCase: true });
+    let realContent = '';
+    contentDiff.forEach(diffPart => {
+      if (diffPart.added) {
+        realContent += ` __${diffPart.value.trim()}__ `;
+      } else if (diffPart.removed) {
+        realContent += ` ~~${diffPart.value.trim()}~~ `;
+      } else {
+        realContent += diffPart.value;
+      }
+    });
+
+    // Replace duplicate whitespaces
+    realContent = realContent.replace(/\s+/g, ' ');
+
     // 1) If this edit was in DMs
     if (msg.channel instanceof Eris.PrivateChannel) {
       const thread = await threads.findOpenThreadByUserId(msg.author.id);
       if (! thread) return;
 
-      const editMessage = utils.disableLinkPreviews(`**The user edited their message:**\n\`B:\` ${oldContent}\n\`A:\` ${newContent}`);
+      const editMessage = utils.disableLinkPreviews(`**The user edited their message:**\n\`New content:\` ${realContent}`);
       thread.postSystemMessage(editMessage);
     }
 

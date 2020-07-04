@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.32.0-beta.0
+(Still a beta 'cause no fixes were implemented from previous version)
+* Add `userinfos` module, which basically pretty-prints relevant user informations, such as his mentionable name, profile picture, etc
+* Edited message overhaul
+  * Implemented git-like `diff` system, using the [diff](https://npmjs.com/package/diff) package.
+  * Deleted words will be ~~crossed out~~
+  * Added words will be <u>underlined</u>
+
 ## v2.31.0-beta.0
 This is a beta release. It is not available on the Releases page and bugs are expected.
 

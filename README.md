@@ -6,6 +6,8 @@ To the user, the entire process happens in DMs with the bot.
 
 Inspired by Reddit's modmail system.
 
+Edited by Stacked. All credits to [Dragory](https://github.com/Dragory)
+
 ## Getting started
 * **[🛠️ Setting up the bot](docs/setup.md)**
 * [📝 Configuration](docs/configuration.md)
